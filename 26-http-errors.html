@@ -76,24 +76,32 @@
 
     function fetchPokemon(name) {
       const pokemonQuery = `
-        query PokemonInfo($name: String) {
-          pokemon(name: $name) {
-            id
-            number
-            name
-            attacks {
-              special {
-                name
-                type
-                damage
-              }
+          query($name: PokemonEnum!) {
+            getPokemon(pokemon: $name reverseFlavorTexts: true takeFlavorTexts: 1) {
+              num
+		          species
+		          types
             }
           }
-        }
       `
+      //   query getPokemon($name: String) {
+      //     pokemon(name: $name) {
+      //       id
+      //       number
+      //       name
+      //       attacks {
+      //         special {
+      //           name
+      //           type
+      //           damage
+      //         }
+      //       }
+      //     }
+      //   }
+      // `
 
       return window
-        .fetch('https://graphql-pokemon.now.sh', {
+        .fetch('https://graphqlpokemon.favware.tech', {
           // learn more about this API here: https://graphql-pokemon.now.sh/
           method: 'POST',
           headers: {
@@ -105,7 +113,7 @@
           }),
         })
         .then(r => r.json())
-        .then(response => response.data.pokemon)
+        .then(response => response.data.getPokemon)
     }
 
     ReactDOM.render(<App />, document.getElementById('root'))
